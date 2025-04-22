@@ -3,7 +3,16 @@ from play_mp3 import play_mp3
 from datetime import datetime
 import random
 import string
+import win32gui
+import win32con
+import win32console
 
+# 取得當前的 CMD 視窗句柄
+hwnd = win32console.GetConsoleWindow()
+
+# 設定視窗為最上層顯示
+win32gui.SetWindowPos(hwnd, win32con.HWND_TOPMOST, 0, 0, 0, 0,
+                      win32con.SWP_NOMOVE | win32con.SWP_NOSIZE)
 def get_current_time():
     return datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
 
@@ -25,7 +34,8 @@ for i in range(total_lines):
             random_words1 = ''.join(random.choices(string.ascii_letters, k=5))
             print(get_current_time()+" "+random_words+"/"+line[j:j+10]+"/"+random_words1)
         
-        file_mp3=f"./save/{(i+1)}.mp3"
+        file_mp3=f"./tests/infer_cli_basic_{(i)}.wav"
+        # file_mp3=f"./save/{(i+1)}.mp3"
         play_mp3(file_mp3)
         with open('play_save.txt', 'w') as f:
             f.write(f"{i}")
